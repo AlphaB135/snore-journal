@@ -5,6 +5,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { ThemedText } from '@/components/themed-text';
 import { ThemedView } from '@/components/themed-view';
 import { Button } from '@/components/ui/button';
+import { assessSession } from '@/lib/analysis/healthAssessment';
 import { useSleepData } from '@/providers/SleepDataProvider';
 import { SleepSession } from '@/types/sleep';
 
@@ -59,6 +60,9 @@ function LatestSessionCard({ session }: { session: SleepSession }) {
         <MetricItem label="ระดับเสียงเฉลี่ย" value={`${session.metrics.averageDb.toFixed(0)} dB`} />
       </View>
       {session.notes ? <ThemedText style={styles.note}>💡 {session.notes}</ThemedText> : null}
+      <ThemedText style={styles.assessment}>
+        {assessSession(session)}
+      </ThemedText>
     </ThemedView>
   );
 }
@@ -226,5 +230,10 @@ const styles = StyleSheet.create({
   note: {
     fontStyle: 'italic',
     opacity: 0.8,
+  },
+  assessment: {
+    marginTop: 8,
+    fontStyle: 'normal',
+    opacity: 0.95,
   },
 });
