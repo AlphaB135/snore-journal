@@ -89,18 +89,21 @@ export default function RecorderScreen() {
       return;
     }
 
+    const recordingRef = recording;
     const endedAt = new Date();
 
     try {
-      await recording.stopAndUnloadAsync();
-      const status = await recording.getStatusAsync();
-      const uri = recording.getURI();
+      await recordingRef.stopAndUnloadAsync();
+      const status = await recordingRef.getStatusAsync();
+      const uri = recordingRef.getURI();
 
-      if (!uri || !status.durationMillis) {
-        throw new Error('missing recording uri');
+      if (!uri) {
+        Alert.alert('บันทึกไม่สำเร็จ', 'ระบบไม่ส่งไฟล์เสียงกลับมา กรุณาลองใหม่อีกครั้ง');
+        return;
       }
 
-      const durationMinutes = status.durationMillis / (1000 * 60);
+      const fallbackDurationMillis = Math.max(1, (endedAt.getTime() - startedAt.getTime()));
+      const durationMinutes = (status.durationMillis ?? fallbackDurationMillis) / (1000 * 60);
 
       const analysis = await analyzeSnoreRecording({
         uri,
@@ -118,14 +121,15 @@ export default function RecorderScreen() {
 
       await saveSession(newSession);
       setNotes('');
-      setIsRecording(false);
-      setStartedAt(null);
-      setRecording(null);
-      setElapsedSeconds(0);
       Alert.alert('บันทึกสำเร็จ', 'เพิ่มบันทึกการนอนใหม่แล้ว');
     } catch (error) {
       console.error(error);
       Alert.alert('เกิดข้อผิดพลาด', 'ไม่สามารถบันทึกข้อมูลได้');
+    } finally {
+      setIsRecording(false);
+      setStartedAt(null);
+      setRecording(null);
+      setElapsedSeconds(0);
     }
   }, [notes, recording, saveSession, startedAt]);
 

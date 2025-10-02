@@ -44,7 +44,14 @@ function LatestSessionCard({ session }: { session: SleepSession }) {
   return (
     <ThemedView style={styles.card}>
       <ThemedText type="subtitle">คืนล่าสุด</ThemedText>
-      <ThemedText style={styles.primaryValue}>{session.metrics.qualityScore}</ThemedText>
+      <ThemedText
+        style={styles.primaryValue}
+        numberOfLines={1}
+        adjustsFontSizeToFit
+        minimumFontScale={0.7}
+      >
+        {session.metrics.qualityScore}
+      </ThemedText>
       <ThemedText type="defaultSemiBold">คะแนนคุณภาพการนอน</ThemedText>
       <View style={styles.metricsRow}>
         <MetricItem label="ชั่วโมงหลับ" value={minutesToHours(session.metrics.totalDurationMinutes)} />
@@ -183,9 +190,15 @@ const styles = StyleSheet.create({
     gap: 4,
   },
   primaryValue: {
-    fontSize: 48,
-    fontWeight: '700',
+    fontSize: 58,
+    lineHeight: 64,
+    fontWeight: '800',
+    flexShrink: 1,
+    maxWidth: '100%',
+    textAlign: 'left',
+    alignSelf: 'flex-start',
   },
+
   trendList: {
     gap: 12,
   },
