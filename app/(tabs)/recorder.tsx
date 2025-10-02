@@ -107,7 +107,7 @@ export default function RecorderScreen() {
       });
 
       const newSession: SleepSession = {
-        id: crypto.randomUUID(),
+        id: generateId('session'),
         startedAt: startedAt.toISOString(),
         endedAt: endedAt.toISOString(),
         notes,
@@ -134,7 +134,7 @@ export default function RecorderScreen() {
         บันทึกเสียงกรน
       </ThemedText>
       <ThemedText style={styles.description}>
-        แตะปุ่ม "เริ่มบันทึก" เพื่อเริ่มจับเสียงระหว่างนอน แอพจะเก็บข้อมูลไว้ในเครื่องของคุณและสามารถวิเคราะห์เป็นกราฟได้ภายหลัง
+        แตะปุ่มเริ่มบันทึกเพื่อเริ่มจับเสียงระหว่างนอน แอพจะเก็บข้อมูลไว้ในเครื่องของคุณและสามารถวิเคราะห์เป็นกราฟได้ภายหลัง
       </ThemedText>
 
       <ThemedView style={styles.card}>
@@ -205,6 +205,10 @@ function formatDuration(totalSeconds: number): string {
     .padStart(2, '0');
   const seconds = (totalSeconds % 60).toString().padStart(2, '0');
   return `${minutes}:${seconds}`;
+}
+
+function generateId(namespace: string): string {
+  return `${namespace}-${Math.random().toString(36).slice(2)}-${Date.now()}`;
 }
 
 const styles = StyleSheet.create({
