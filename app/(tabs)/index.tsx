@@ -1,5 +1,6 @@
 import { useMemo } from 'react';
 import { RefreshControl, ScrollView, StyleSheet, View } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { ThemedText } from '@/components/themed-text';
 import { ThemedView } from '@/components/themed-view';
@@ -14,25 +15,28 @@ export default function OverviewScreen() {
   const latestSession = orderedSessions[0];
 
   return (
-    <ScrollView
-      style={styles.container}
-      refreshControl={<RefreshControl refreshing={isLoading} onRefresh={refresh} />}
-      contentContainerStyle={styles.content}>
-      <ThemedText type="title" style={styles.title}>
-        บันทึกการนอนของคุณ
-      </ThemedText>
+    <SafeAreaView style={styles.safeArea} edges={['top']}>
+      <ScrollView
+        style={styles.container}
+        refreshControl={<RefreshControl refreshing={isLoading} onRefresh={refresh} />}
+        contentContainerStyle={styles.content}
+        contentInsetAdjustmentBehavior="always">
+        <ThemedText type="title" style={styles.title}>
+          บันทึกการนอนของคุณ
+        </ThemedText>
 
-      {latestSession ? (
-        <LatestSessionCard session={latestSession} />
-      ) : (
-        <EmptyState onSeed={seedDemoData} />
-      )}
+        {latestSession ? (
+          <LatestSessionCard session={latestSession} />
+        ) : (
+          <EmptyState onSeed={seedDemoData} />
+        )}
 
-      <TrendSection label="แนวโน้มรายวัน" data={analytics.daily.slice(-7)} />
-      <TrendSection label="แนวโน้มรายสัปดาห์" data={analytics.weekly.slice(-6)} />
+        <TrendSection label="แนวโน้มรายวัน" data={analytics.daily.slice(-7)} />
+        <TrendSection label="แนวโน้มรายสัปดาห์" data={analytics.weekly.slice(-6)} />
 
-      <RecentSessionsList sessions={orderedSessions.slice(0, 5)} />
-    </ScrollView>
+        <RecentSessionsList sessions={orderedSessions.slice(0, 5)} />
+      </ScrollView>
+    </SafeAreaView>
   );
 }
 
@@ -151,6 +155,9 @@ function formatDate(value: string): string {
 }
 
 const styles = StyleSheet.create({
+  safeArea: {
+    flex: 1,
+  },
   container: {
     flex: 1,
   },

@@ -1,5 +1,6 @@
 import { useMemo, useState } from 'react';
 import { ScrollView, StyleSheet, TouchableOpacity, View } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { ThemedText } from '@/components/themed-text';
 import { ThemedView } from '@/components/themed-view';
@@ -23,35 +24,37 @@ export default function InsightsScreen() {
   }, [sessions]);
 
   return (
-    <ScrollView style={styles.container} contentContainerStyle={styles.content}>
-      <ThemedText type="title">แดชบอร์ดการนอน</ThemedText>
+    <SafeAreaView style={styles.safeArea} edges={['top']}>
+      <ScrollView style={styles.container} contentContainerStyle={styles.content} contentInsetAdjustmentBehavior="always">
+        <ThemedText type="title">แดชบอร์ดการนอน</ThemedText>
 
-      <SummaryRow
-        averageQuality={averageQuality}
-        totalSessions={sessions.length}
-        averageSnoreMinutes={calculateAverageSnoreMinutes(sessions)}
-      />
+        <SummaryRow
+          averageQuality={averageQuality}
+          totalSessions={sessions.length}
+          averageSnoreMinutes={calculateAverageSnoreMinutes(sessions)}
+        />
 
-      <SegmentedControl period={period} onChange={setPeriod} />
+        <SegmentedControl period={period} onChange={setPeriod} />
 
-      <ThemedView style={styles.card}>
-        <ThemedText type="subtitle">กราฟช่วงเวลา</ThemedText>
-        <SleepTrendChart data={selectedSeries} />
-      </ThemedView>
+        <ThemedView style={styles.card}>
+          <ThemedText type="subtitle">กราฟช่วงเวลา</ThemedText>
+          <SleepTrendChart data={selectedSeries} />
+        </ThemedView>
 
-      <ThemedView style={styles.card}>
-        <ThemedText type="subtitle">รายละเอียด</ThemedText>
-        <View style={styles.detailList}>
-          {selectedSeries.map((item) => (
-            <View key={item.dateKey} style={styles.detailRow}>
-              <ThemedText type="defaultSemiBold">{item.label}</ThemedText>
-              <ThemedText>{item.averageQuality} คะแนน</ThemedText>
-              <ThemedText style={styles.subtle}>กรน {item.snoreMinutes} นาที</ThemedText>
-            </View>
-          ))}
-        </View>
-      </ThemedView>
-    </ScrollView>
+        <ThemedView style={styles.card}>
+          <ThemedText type="subtitle">รายละเอียด</ThemedText>
+          <View style={styles.detailList}>
+            {selectedSeries.map((item) => (
+              <View key={item.dateKey} style={styles.detailRow}>
+                <ThemedText type="defaultSemiBold">{item.label}</ThemedText>
+                <ThemedText>{item.averageQuality} คะแนน</ThemedText>
+                <ThemedText style={styles.subtle}>กรน {item.snoreMinutes} นาที</ThemedText>
+              </View>
+            ))}
+          </View>
+        </ThemedView>
+      </ScrollView>
+    </SafeAreaView>
   );
 }
 
@@ -117,6 +120,9 @@ function calculateAverageSnoreMinutes(sessions: ReturnType<typeof useSleepData>[
 }
 
 const styles = StyleSheet.create({
+  safeArea: {
+    flex: 1,
+  },
   container: {
     flex: 1,
   },

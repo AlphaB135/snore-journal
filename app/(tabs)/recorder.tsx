@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { Alert, StyleSheet, TextInput, View } from 'react-native';
 import { Audio } from 'expo-av';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { ThemedText } from '@/components/themed-text';
 import { ThemedView } from '@/components/themed-view';
@@ -129,10 +130,11 @@ export default function RecorderScreen() {
   }, [notes, recording, saveSession, startedAt]);
 
   return (
-    <ThemedView style={styles.container}>
-      <ThemedText type="title" style={styles.header}>
-        บันทึกเสียงกรน
-      </ThemedText>
+    <SafeAreaView style={styles.safeArea} edges={['top']}>
+      <ThemedView style={styles.container}>
+        <ThemedText type="title" style={styles.header}>
+          บันทึกเสียงกรน
+        </ThemedText>
       <ThemedText style={styles.description}>
         แตะปุ่มเริ่มบันทึกเพื่อเริ่มจับเสียงระหว่างนอน แอพจะเก็บข้อมูลไว้ในเครื่องของคุณและสามารถวิเคราะห์เป็นกราฟได้ภายหลัง
       </ThemedText>
@@ -175,7 +177,8 @@ export default function RecorderScreen() {
           </ThemedText>
         </ThemedView>
       ) : null}
-    </ThemedView>
+      </ThemedView>
+    </SafeAreaView>
   );
 }
 
@@ -212,6 +215,9 @@ function generateId(namespace: string): string {
 }
 
 const styles = StyleSheet.create({
+  safeArea: {
+    flex: 1,
+  },
   container: {
     flex: 1,
     padding: 16,
