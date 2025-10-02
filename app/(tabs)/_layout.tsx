@@ -19,15 +19,28 @@ export default function TabLayout() {
       <Tabs.Screen
         name="index"
         options={{
-          title: 'Home',
-          tabBarIcon: ({ color }) => <IconSymbol size={28} name="house.fill" color={color} />,
+          title: 'ภาพรวม',
+          tabBarIcon: ({ color }) => (
+            <IconSymbol size={28} name="waveform.path.ecg" color={color} />
+          ),
         }}
       />
       <Tabs.Screen
-        name="explore"
+        name="recorder"
         options={{
-          title: 'Explore',
-          tabBarIcon: ({ color }) => <IconSymbol size={28} name="paperplane.fill" color={color} />,
+          title: 'บันทึก',
+          tabBarIcon: ({ color }) => (
+            <IconSymbol size={28} name="mic.circle.fill" color={color} />
+          ),
+        }}
+      />
+      <Tabs.Screen
+        name="insights"
+        options={{
+          title: 'วิเคราะห์',
+          tabBarIcon: ({ color }) => (
+            <IconSymbol size={28} name="chart.bar.doc.horizontal.fill" color={color} />
+          ),
         }}
       />
     </Tabs>
